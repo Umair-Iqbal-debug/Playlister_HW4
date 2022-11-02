@@ -77,6 +77,7 @@ function ListCard(props) {
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
+            className = 'list-card'
             sx={{ marginTop: '15px', display: 'flex', p: 1 }}
             style={{ width: '100%', fontSize: '48pt' }}
             button
