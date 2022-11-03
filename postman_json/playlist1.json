@@ -1,0 +1,25 @@
+{
+    "name":"playlist 1",
+    "songs": [
+        {
+            "title": "Have a Cigar",
+            "artist": "Pink Floyd",
+            "youTubeId": "tbdpv7G_PPg"
+        },
+        {
+            "title": "In the Court of the Crimson King",
+            "artist": "King Crimson",
+            "youTubeId": "ukgraQ-xkp4"
+        },
+        {
+            "title": "Roundabout",
+            "artist": "Yes",
+            "youTubeId": "QOrrNM4md8c"
+        },
+        {
+            "title": "The End",
+            "artist": "The Doors",
+            "youTubeId": "ZeMlQEWEg2Q"
+        }
+    ]
+}

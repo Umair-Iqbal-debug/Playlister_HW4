@@ -76,7 +76,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     currentModal : CurrentModal.NONE,
                     idNamePairs: payload.idNamePairs,
-                    currentList: payload.playlist,
+                    currentList: null,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -258,6 +258,8 @@ function GlobalStoreContextProvider(props) {
             payload: {}
         });
         tps.clearAllTransactions();
+        // go back to the HomeWrapper which should take us to the homescreen
+        store.history.push('/');
     }
 
     // THIS FUNCTION CREATES A NEW LIST
@@ -318,7 +320,7 @@ function GlobalStoreContextProvider(props) {
         getListToDelete(id);
     }
     store.unmarkListForDeletion = function(){
-        
+        store.hideModals();
     }
     store.deleteList = function (id) {
         async function processDelete(id) {
@@ -371,18 +373,25 @@ function GlobalStoreContextProvider(props) {
     // moveItem, updateItem, updateCurrentList, undo, and redo
     store.setCurrentList = function (id) {
         async function asyncSetCurrentList(id) {
-            let response = await api.getPlaylistById(id);
-            if (response.data.success) {
-                let playlist = response.data.playlist;
-
-                response = await api.updatePlaylistById(playlist._id, playlist);
+            try{
+                let response = await api.getPlaylistById(id);
                 if (response.data.success) {
-                    storeReducer({
-                        type: GlobalStoreActionType.SET_CURRENT_LIST,
-                        payload: playlist
-                    });
-                    history.push("/playlist/" + playlist._id);
+                    let playlist = response.data.playlist;
+
+                    response = await api.updatePlaylistById(playlist._id, playlist);
+                    if (response.data.success) {
+                        storeReducer({
+                            type: GlobalStoreActionType.SET_CURRENT_LIST,
+                            payload: playlist
+                        });
+                        history.push("/playlist/" + playlist._id);
+                    }
                 }
+            }
+            
+
+            catch({response}){
+                console.log(`ERROR MESSAGE FROM SERVER: ${response.data.description}`)
             }
         }
         asyncSetCurrentList(id);

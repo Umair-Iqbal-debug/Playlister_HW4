@@ -61,10 +61,10 @@ deletePlaylist = async (req, res) => {
             User.findOne({ email: list.ownerEmail }, (err, user) => {
                 if (user._id == req.userId) {
                     const newPlaylist = user.playlists.filter(id => JSON.stringify(id) != JSON.stringify(list._id));
-                    console.log(list._id == newPlaylist[0] );
-                    console.log(newPlaylist);
                     user.playlists = newPlaylist;
-                    user.save().then( (err,user) =>{
+                    user
+                    .save()
+                    .then( (err,user) =>{
                         Playlist.findOneAndDelete({ _id: req.params.id }, () => {
                             return res.status(200).json({});
                         }).catch(err => console.log(err))
@@ -101,7 +101,7 @@ getPlaylistById = async (req, res) => {
                 }
                 else {
                     console.log("incorrect user!");
-                    return res.status(400).json({ success: false, description: "authentication error" });
+                    return res.status(401).json({ success: false, description: "authentication error" });
                 }
             });
         }
@@ -145,7 +145,9 @@ getPlaylistPairs = async (req, res) => {
     }).catch(err => console.log(err))
 }
 getPlaylists = async (req, res) => {
-    console.log('getting playlists')
+    // LETS FIRST FIND THE USERS EMAIL 
+    // THEN ONLY RETURN THE PLAYLISTS THAT BELONG TO THEM
+    
     await Playlist.find({}, (err, playlists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })

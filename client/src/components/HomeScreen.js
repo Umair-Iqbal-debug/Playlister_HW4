@@ -42,7 +42,7 @@ const HomeScreen = () => {
             <div id="list-selector-heading">
             <Fab 
                 color="primary" 
-                aria-label="add"
+                aria-label="add" 
                 id="add-list-button"
                 onClick={handleCreateNewList}
             >
