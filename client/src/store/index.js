@@ -30,7 +30,8 @@ export const GlobalStoreActionType = {
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
     EDIT_SONG: "EDIT_SONG",
     REMOVE_SONG: "REMOVE_SONG",
-    HIDE_MODALS: "HIDE_MODALS"
+    HIDE_MODALS: "HIDE_MODALS",
+    ERROR_MODAL: 'ERROR_MODAL'
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -40,7 +41,8 @@ const CurrentModal = {
     NONE : "NONE",
     DELETE_LIST : "DELETE_LIST",
     EDIT_SONG : "EDIT_SONG",
-    REMOVE_SONG : "REMOVE_SONG"
+    REMOVE_SONG : "REMOVE_SONG",
+    ERROR: "ERROR"
 }
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
@@ -75,6 +77,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CHANGE_LIST_NAME: {
                 return setStore({
                     currentModal : CurrentModal.NONE,
+                    errorMessage:null,
                     idNamePairs: payload.idNamePairs,
                     currentList: null,
                     currentSongIndex: -1,
@@ -89,6 +92,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CLOSE_CURRENT_LIST: {
                 return setStore({
                     currentModal : CurrentModal.NONE,
+                    errorMessage:null,
                     idNamePairs: store.idNamePairs,
                     currentList: null,
                     currentSongIndex: -1,
@@ -103,6 +107,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.CREATE_NEW_LIST: {                
                 return setStore({
                     currentModal : CurrentModal.NONE,
+                    errorMessage:null,
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     currentSongIndex: -1,
@@ -117,6 +122,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.LOAD_ID_NAME_PAIRS: {
                 return setStore({
                     currentModal : CurrentModal.NONE,
+                    errorMessage:null,
                     idNamePairs: payload,
                     currentList: null,
                     currentSongIndex: -1,
@@ -131,6 +137,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.MARK_LIST_FOR_DELETION: {
                 return setStore({
                     currentModal : CurrentModal.DELETE_LIST,
+                    errorMessage:null,
                     idNamePairs: store.idNamePairs,
                     currentList: null,
                     currentSongIndex: -1,
@@ -145,6 +152,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.SET_CURRENT_LIST: {
                 return setStore({
                     currentModal : CurrentModal.NONE,
+                    errorMessage:null,
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     currentSongIndex: -1,
@@ -159,6 +167,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE: {
                 return setStore({
                     currentModal : CurrentModal.NONE,
+                    errorMessage:null,
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     currentSongIndex: -1,
@@ -173,6 +182,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.EDIT_SONG: {
                 return setStore({
                     currentModal : CurrentModal.EDIT_SONG,
+                    errorMessage:null,
                     idNamePairs: store.idNamePairs,
                     currentList: store.currentList,
                     currentSongIndex: payload.currentSongIndex,
@@ -186,6 +196,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.REMOVE_SONG: {
                 return setStore({
                     currentModal : CurrentModal.REMOVE_SONG,
+                    errorMessage:null,
                     idNamePairs: store.idNamePairs,
                     currentList: store.currentList,
                     currentSongIndex: payload.currentSongIndex,
@@ -199,6 +210,21 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.HIDE_MODALS: {
                 return setStore({
                     currentModal : CurrentModal.NONE,
+                    errorMessage:null,
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    currentSongIndex: -1,
+                    currentSong: null,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null
+                });
+            }
+            case GlobalStoreActionType.ERROR_MODAL:{
+                return setStore({
+                    currentModal : CurrentModal.ERROR_MODAL,
+                    errorMessage:payload.messsage,
                     idNamePairs: store.idNamePairs,
                     currentList: store.currentList,
                     currentSongIndex: -1,
@@ -351,6 +377,14 @@ function GlobalStoreContextProvider(props) {
             payload: {currentSongIndex: songIndex, currentSong: songToRemove}
         });        
     }
+
+    store.showErrorModal = (errorMessage) =>{
+        storeReducer({
+            type: GlobalStoreActionType.ERROR_MODAL,
+            message:errorMessage
+        })
+    }
+
     store.hideModals = () => {
         storeReducer({
             type: GlobalStoreActionType.HIDE_MODALS,
@@ -365,6 +399,10 @@ function GlobalStoreContextProvider(props) {
     }
     store.isRemoveSongModalOpen = () => {
         return store.currentModal === CurrentModal.REMOVE_SONG;
+    }
+
+    store.isErrorModalOpen = () =>{
+        return store.currentModal === CurrentModal.ERROR;
     }
 
     // THE FOLLOWING 8 FUNCTIONS ARE FOR COORDINATING THE UPDATING

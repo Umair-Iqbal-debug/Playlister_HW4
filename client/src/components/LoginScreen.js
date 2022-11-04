@@ -15,10 +15,17 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import ErrorModal from './ErrorModal';
+import { Alert } from '@mui/material';
 
 export default function LoginScreen() {
     const { auth } = useContext(AuthContext);
 
+    let errorModal = ''
+    if(auth.errorMessage !== null){
+        errorModal = <ErrorModal/>
+    }
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -109,6 +116,7 @@ export default function LoginScreen() {
                         </Grid>
                         <Copyright sx={{ mt: 5 }} />
                     </Box>
+                    <ErrorModal/>
                 </Box>
             </Grid>
         </Grid>
