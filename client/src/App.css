@@ -320,11 +320,19 @@ input {
 
 .modal-control {
   cursor: pointer;
-  width: 20%;
+  margin-bottom: 1rem;
 }
 
 .dialog-header {
   font-size: 24pt;
+}
+
+.close-modal-button{
+  float:right;
+}
+
+.confirm-modal-button{
+  text-align: center;
 }
 
 #close-modal-button {
