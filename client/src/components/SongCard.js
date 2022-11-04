@@ -4,85 +4,37 @@ import { GlobalStoreContext } from '../store'
 function SongCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const { song, index } = props;
-    // const [ draggedTo, setDraggedTo ] = useState(0);
+    const [ draggedTo, setDraggedTo ] = useState(0);
 
-    // function handleDragStart(event) {
-    //     event.dataTransfer.setData("song", index);
-    // }
-
-    // function handleDragOver(event) {
-    //     event.preventDefault();
-    // }
-
-    // function handleDragEnter(event) {
-    //     event.preventDefault();
-    //     setDraggedTo(true);
-    // }
-
-    // function handleDragLeave(event) {
-    //     event.preventDefault();
-    //     setDraggedTo(false);
-    // }
-
-    // function handleDrop(event) {
-    //     event.preventDefault();
-    //     let targetIndex = index;
-    //     let sourceIndex = Number(event.dataTransfer.getData("song"));
-    //     setDraggedTo(false);
-
-    //     // UPDATE THE LIST
-    //     store.addMoveSongTransaction(sourceIndex, targetIndex);
-    // }
-
-    const[draggingState,setDraggingState] = useState({
-        isDragging: false,
-        draggedTo: false
-    })
-    
-
-    const handleDragStart = (event) => {
+    function handleDragStart(event) {
         event.dataTransfer.setData("song", index);
-        setDraggingState(prevState => ({
-            isDragging: true,
-            draggedTo: prevState.draggedTo
-        }));
     }
-    const handleDragOver = (event) => {
+
+    function handleDragOver(event) {
         event.preventDefault();
-        setDraggingState(prevState => ({
-            isDragging: prevState.isDragging,
-            draggedTo: true
-        }));
     }
-   const handleDragEnter = (event) => {
+
+    function handleDragEnter(event) {
         event.preventDefault();
-        setDraggingState(prevState => ({
-            isDragging: prevState.isDragging,
-            draggedTo: true
-        }));
+        setDraggedTo(true);
     }
-    const handleDragLeave = (event) => {
+
+    function handleDragLeave(event) {
         event.preventDefault();
-        setDraggingState(prevState => ({
-            isDragging: prevState.isDragging,
-            draggedTo: false
-        }));
+        setDraggedTo(false);
     }
-    const handleDrop = (event) => {
+
+    function handleDrop(event) {
         event.preventDefault();
         let targetIndex = index;
         let sourceIndex = Number(event.dataTransfer.getData("song"));
-        
-        setDraggingState(prevState => ({
-            isDragging: false,
-            draggedTo: false
-        }));
+        setDraggedTo(false);
 
-        if(sourceIndex === targetIndex) return;
-        store.addMoveSongTransaction(sourceIndex,targetIndex);
-
+        // UPDATE THE LIST
+        store.addMoveSongTransaction(sourceIndex, targetIndex);
     }
-    
+
+
     function handleRemoveSong(event) {
         event.stopPropagation();
         store.showRemoveSongModal(index, song);
