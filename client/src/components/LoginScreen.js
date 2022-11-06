@@ -16,15 +16,10 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ErrorModal from './ErrorModal';
-import { Alert } from '@mui/material';
+
 
 export default function LoginScreen() {
     const { auth } = useContext(AuthContext);
-
-    let errorModal = ''
-    if(auth.errorMessage !== null){
-        errorModal = <ErrorModal/>
-    }
     
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -37,7 +32,7 @@ export default function LoginScreen() {
     };
 
     return (
-        <Grid container component="main" sx={{ height: '100vh' }}>
+        <Grid container component="main" sx={{height:'65vh'}} className='middle'>
             <CssBaseline />
             <Grid
                 item

@@ -426,10 +426,11 @@ function GlobalStoreContextProvider(props) {
                     }
                 }
             }
-            
 
             catch({response}){
-                console.log(`ERROR MESSAGE FROM SERVER: ${response.data.description}`)
+                console.log(response)
+                alert(`ERROR MESSAGE FROM SERVER: ${response.data.errorMessage}`)
+                history.push('/');
             }
         }
         asyncSetCurrentList(id);
