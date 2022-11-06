@@ -7,6 +7,46 @@ const User = require('../models/user-model');
     
     @author McKilla Gorilla
 */
+// createPlaylist = (req, res) => {
+//     const body = req.body;
+//     console.log("createPlaylist body: " + JSON.stringify(body));
+
+//     if (!body) {
+//         return res.status(400).json({
+//             success: false,
+//             error: 'You must provide a Playlist',
+//         })
+//     }
+
+//     const playlist = new Playlist(body);
+//     console.log("playlist: " + playlist.toString());
+//     if (!playlist) {
+//         return res.status(400).json({ success: false, error: err })
+//     }
+
+//     User.findOne({ _id: req.userId }, (err, user) => {
+//         console.log("user found: " + JSON.stringify(user));
+//         user.playlists.push(playlist._id);
+//         user
+//             .save()
+//             .then(() => {
+//                 playlist
+//                     .save()
+//                     .then(() => {
+//                         return res.status(201).json({
+//                             playlist: playlist
+//                         })
+//                     })
+//                     .catch(error => {
+//                         return res.status(400).json({
+//                             errorMessage: 'Playlist Not Created!'
+//                         })
+//                     })
+//             });
+//     })
+// }
+
+
 createPlaylist = (req, res) => {
     const body = req.body;
     console.log("createPlaylist body: " + JSON.stringify(body));
@@ -27,6 +67,7 @@ createPlaylist = (req, res) => {
     User.findOne({ _id: req.userId }, (err, user) => {
         console.log("user found: " + JSON.stringify(user));
         user.playlists.push(playlist._id);
+        playlist.ownerEmail = user.email;
         user
             .save()
             .then(() => {
